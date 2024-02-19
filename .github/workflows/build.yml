@@ -1,0 +1,34 @@
+name: build
+on: [push, pull_request]
+jobs:
+  build:
+    name: aws-boomer on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '21'
+          distribution: 'graalvm'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          native-image-job-reports: 'true'
+
+      - name: Checkout app repo
+        uses: actions/checkout@v2
+        with:
+          repository: /sherzodbeek/aws-boomer-test
+          path: aws-boomer-test
+
+      - name: Build native executable
+        run: |
+          ./gradlew nativeCompile
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v2
+        with:
+          name: aws-boomer-${{ matrix.os }}
+          path: aws-boomer*
