@@ -17,12 +17,6 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           native-image-job-reports: 'true'
 
-      - name: Checkout app repo
-        uses: actions/checkout@v2
-        with:
-          repository: sherzodbeek/aws-boomer-test
-          path: aws-boomer-test
-
       - name: Build native executable
         run: |
           ./gradlew nativeCompile
