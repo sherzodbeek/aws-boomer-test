@@ -20,7 +20,7 @@ jobs:
       - name: Checkout app repo
         uses: actions/checkout@v2
         with:
-          repository: /sherzodbeek/aws-boomer-test
+          repository: sherzodbeek/aws-boomer-test
           path: aws-boomer-test
 
       - name: Build native executable
